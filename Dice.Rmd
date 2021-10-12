@@ -1,0 +1,103 @@
+---
+title: "Roll the Dice"
+author: "Anna"
+date: "10/6/2021"
+output: 
+  html_document: 
+    theme: cerulean
+    toc: true
+    toc_float: true
+  
+---
+
+```{r setup, include=FALSE}
+
+```
+
+In this simple project, I am simulating the rolling of two dice. 
+
+## Create the dice
+
+```{r }
+#create a die, this is an object that R will save for use later
+die <- 1:6
+```
+
+## Simulate the roll of 2 dice
+
+To simulate the roll of 2 dice I use the 'sample' function.
+
+```{r}
+#sample a number from 2 dice with replacement
+dice <- sample(die, 2, replace = TRUE)
+```
+
+Use inline code to put the result of my sampling into the sentence below in my output doc.:
+
+When I simulate rolling the dice, I get a: `r dice`
+
+## Sum the result
+
+Now, I will sum the numbers on my two dice:
+```{r}
+#sum the two results
+total<- sum(dice)
+```
+
+The sum of my two dice is: `r total`
+
+## Create one function for the simulation
+
+I am going to make the rolling of the dice and summing the two into a function called roll. Here is the code: 
+
+```{r echo=TRUE}
+#make the dice rolling a function
+roll<- function () {
+  die<- 1:6
+  dice<- sample(die, 2, replace=TRUE)
+  sum(dice)
+}
+```
+
+## Roll the dice
+
+```{r echo=TRUE}
+roll1<- roll()
+```
+
+I rolled the dice again, using the roll function. I got a total of: `r roll1`
+
+```{r}
+roll2<- roll()
+```
+
+And, I rolled it again. This time I got: `r roll2`
+
+## Probability of outcomes
+
+What is the probability of getting 1 of the 12 different possible totals from the two dice? Note, the probability of each of the possible totals are not the same. So, it is not just 1/12.
+
+```{r }
+#create a vector of the possible totals from rolling two dice
+totals<- c(outer(1:6, 1:6, "+"))
+
+#Create a vector of the unique possible totals
+Total<- unique(totals)
+
+#How many times does each possible outcome occur?
+freqs<-table(totals)
+
+#What is the probability of each possible outcome?
+props<-data.frame(prop.table(freqs))
+
+#create a table with each possible outcome and each probability
+SummaryTable<-data.frame(props)
+colnames(SummaryTable)<-c('Total','Probability')
+```
+
+Here is the Summary Table with the possible total and it's probability:
+
+```{r echo=FALSE, comment=NA}
+print(SummaryTable, row.names=FALSE)
+```
+
